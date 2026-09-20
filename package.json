@@ -1,0 +1,17 @@
+{
+  "name": "turn-rule-validator",
+  "version": "1.0.0",
+  "description": "桌游回合规则验证器：在有限状态空间上广度探索规则触发路径，发现死锁与互斥冲突",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js",
+    "test": "node --test"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "express": "^4.19.2"
+  }
+}

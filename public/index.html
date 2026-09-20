@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>桌游回合规则验证器</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="site-header">
+    <h1>桌游回合规则验证器</h1>
+    <p class="subtitle">
+      定义有限状态变量与「条件 → 赋值」规则，从初始状态广度探索所有触发路径，
+      自动定位 <strong>死锁</strong>（无规则可执行）与 <strong>互斥冲突</strong>（多条互斥规则同时满足），
+      并给出最短触发路径。
+    </p>
+  </header>
+
+  <main>
+    <section class="panel" id="config-panel">
+      <h2>探索参数</h2>
+      <div class="config-grid">
+        <label>
+          最大步数
+          <input type="number" id="cfg-max-steps" min="0" max="1000" value="12" />
+        </label>
+        <label>
+          状态上限
+          <input type="number" id="cfg-state-limit" min="1" max="1000000" value="10000" />
+        </label>
+        <label class="checkbox-label">
+          <input type="checkbox" id="cfg-default-mutex" />
+          <span>所有规则默认互斥（未分组的规则也归入同一默认互斥组）</span>
+        </label>
+      </div>
+    </section>
+
+    <section class="panel" id="variables-panel">
+      <div class="panel-head">
+        <h2>状态变量</h2>
+        <button type="button" class="btn btn-small" id="btn-add-var">+ 添加变量</button>
+      </div>
+      <div id="variables-list" class="cards"></div>
+    </section>
+
+    <section class="panel" id="rules-panel">
+      <div class="panel-head">
+        <h2>规则（条件 → 并行赋值）</h2>
+        <button type="button" class="btn btn-small" id="btn-add-rule">+ 添加规则</button>
+      </div>
+      <div id="rules-list" class="cards"></div>
+    </section>
+
+    <section class="panel actions-panel">
+      <div class="action-row">
+        <button type="button" class="btn btn-primary" id="btn-run">▶ 开始验证</button>
+        <button type="button" class="btn" id="btn-export">⇩ 导出规则集 JSON</button>
+        <button type="button" class="btn" id="btn-import-file">⇧ 从文件导入</button>
+        <button type="button" class="btn" id="btn-import-text">从文本导入</button>
+        <button type="button" class="btn btn-ghost" id="btn-example">载入示例</button>
+        <input type="file" id="import-file-input" accept=".json,application/json" hidden />
+      </div>
+      <div id="import-text-area" class="import-text" hidden>
+        <textarea id="import-text" rows="6" placeholder='粘贴规则集 JSON，例如 {"variables":[...],"rules":[...]}'></textarea>
+        <div class="action-row">
+          <button type="button" class="btn btn-small" id="btn-import-confirm">确认导入</button>
+          <button type="button" class="btn btn-small btn-ghost" id="btn-import-cancel">取消</button>
+        </div>
+      </div>
+      <div id="form-error" class="form-error" hidden></div>
+    </section>
+
+    <section class="panel" id="result-panel" hidden>
+      <div class="panel-head">
+        <h2>验证结果</h2>
+        <button type="button" class="btn btn-small btn-ghost" id="btn-close-result">关闭</button>
+      </div>
+      <div id="result-body"></div>
+    </section>
+  </main>
+
+  <footer>
+    <span>规则集 JSON 可在表单与外部工具之间自由导入 / 导出 · BFS 去重探索 · 状态上限保护</span>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
